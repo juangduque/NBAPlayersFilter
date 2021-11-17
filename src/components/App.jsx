@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PlayerCard from '../components/PlayerCard.jsx';
 import Loader from '../components/Loader.jsx';
 
-// import '../style/css/page/app.css';
-import '../style/scss/page/app.scss';
+import '../style/css/page/app.css';
 
 const App = () => {
   const [state, setState] = useState({

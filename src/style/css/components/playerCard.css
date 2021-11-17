@@ -1,0 +1,7 @@
+.cardContainer {
+  list-style-type: none;
+  margin: 5px 0;
+}
+.cardContainer .namePlayer {
+  font-size: 1.8rem;
+}
