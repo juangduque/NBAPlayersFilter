@@ -1,0 +1,52 @@
+@import '../lib/variables';
+@import '../components/playerCard';
+
+main{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: auto;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.appHeader{
+  display:  flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 40px 0;
+  background: linear-gradient(180deg, $main-color 0%, $main-color 48.96%, rgba(196, 196, 196, 0) 100%);
+  text-align: center;
+  & h1{
+    font-size: 4rem;
+    margin-bottom: 20px;
+  }
+  & h2{
+    font-size: 1.8rem;
+  }
+}
+
+.searchSection{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+  width: 100%;
+  & input{
+    width: 300px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 1.8rem;
+    border: 1px solid #a4a4a4;
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+  & p{
+    margin-top: 5px;
+    color: #6D6866;
+  }
+}
+  

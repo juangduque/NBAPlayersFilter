@@ -1,0 +1,18 @@
+@import '../lib/variables';
+
+.cardContainer{
+  list-style-type: none;
+  margin: 5px 0;
+  background-color: $backgroundCard;
+  border-radius: 15px;
+  width: 250px;
+  height: auto;
+  padding-left: 10px;
+  & .namePlayer{
+    font-size: 1.8rem;
+  }
+  & .heightData{
+    padding-bottom: 5px;
+  }
+}
+
