@@ -1,5 +1,7 @@
 # NBA Players height app
 
+This app was develop with create react app and uses redux to handle the global state.
+
 You can see a list of players filtered by height. The user enters the height in inches, the heights are between 68 and 90 inches.
 
 ## Live demo
