@@ -26,7 +26,7 @@ const dataPlayersReducers = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         pageStatus: {
-          ...state.loading,
+          ...state.pageStatus,
           loading: action.isLoading
         }
       };

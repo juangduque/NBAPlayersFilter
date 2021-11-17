@@ -1,63 +1,55 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import PlayerCard from '../components/PlayerCard.jsx';
 import Loader from '../components/Loader.jsx';
+
+import { 
+  fetchDataPlayers
+} from '../redux/actions/dataPlayersActions';
 
 import '../style/css/page/app.css';
 
 const App = () => {
-  const [state, setState] = useState({
-    loading: false,
-    error: null,
-    data: [],
-    searchValue: ""
-  });
+  const searchInput = useRef(null);
+  const [searchValue, setSearch] = useState('');
+  const data = useSelector(({dataPlayersReducers}) => dataPlayersReducers.dataPlayers);
+  const pageStatus = useSelector(({dataPlayersReducers}) => dataPlayersReducers.pageStatus);
+  const dispatch = useDispatch();
+  const dataPlayers = data.values;
+ 
+  useEffect( () => {
+    dispatch( fetchDataPlayers() );
+  }, [dispatch]);
 
-  // const fetchData = async () => {
-  //   const URL_FETCH = 'https://mach-eight.uc.r.appspot.com/';
-  //   setState({ loading: true, error:null })
+  const handleChange = () => {
+    setSearch(searchInput.current.value);
+  };
+   
+  const displayPlayersFiltered = (search) => {
+    const players = [];
+    Object.keys(dataPlayers).map( index => {
+      if( dataPlayers[index]['h_in'] === search ){
+        players.push(
+          <PlayerCard 
+            key={ index }
+            name={ dataPlayers[index]['first_name'] }
+            lastName={ dataPlayers[index]['last_name'] }
+            height_inches={ dataPlayers[index]['h_in'] }
+            height_meters={ dataPlayers[index]['h_meters'] }
+          />
+        )
+      }
+    });
+    return players;
+  };
 
-  //   try {
-  //     await fetch( URL_FETCH )
-  //       .then( ( response ) => response.json() )
-  //       .then( ( data ) => {
-  //         setState({ loading: false, data: data.values });          
-  //       });     
-  //   } catch (error) {
-  //     setState({ loading: false, error: error });
-  //   };
-  // };
-  
-  // useEffect( () => {
-  //   fetchData(); 
-  // });
-
-  const handleChange = e => {
-    const numRegex = /^[0-9\b]+$/;
-    if (e.target.value === '' || numRegex.test(e.target.value)) {
-      setState({ searchValue: e.target.value})
-    };
-  }; 
-    
-  if (state.loading === true ) {
+  if (pageStatus.loading === true ) {
     return <Loader />;
   }
 
-  const players = []
-  let playersData = state.data;
-
-  for(let index = 0; index < playersData.length; index++){
-    if( playersData[index]['h_in'] === state.searchValue ){        
-      players.push(
-        <PlayerCard 
-          key={ index }
-          name={ playersData[index]['first_name'] }
-          lastName={ playersData[index]['last_name'] }
-          height_inches={ playersData[index]['h_in'] }
-          height_meters={ playersData[index]['h_meters'] }
-        />
-      )
-    }    
-  };
+  if (pageStatus.error === true ) {
+    return <h1 className="error-label">There was an error: {pageStatus.errorMessage}</h1>
+  }
     
   return (
     <main>
@@ -70,9 +62,10 @@ const App = () => {
       {/* SEARCH BAR SECTION */}
       <section className="searchSection">
         <input
-          type="text"
+          type="number"
           placeholder="Search"
-          value={ state.searchValue }
+          ref={ searchInput }
+          value={ searchValue }
           onChange={handleChange}
         />
         <p>Type the height in inches</p>
@@ -81,10 +74,13 @@ const App = () => {
       {/* SHOW LIST OF PLAYERS SECTION */}
       <section>
         <ul>
-          { state.searchValue === "" ? "":
-            players.length != 0 ?
-              players:
-              <h2>No matches found</h2>
+          {
+            ( searchValue !== "" ) 
+            ? ( displayPlayersFiltered(searchValue).length === 0 
+              ? <h2>No matches found</h2>
+              : displayPlayersFiltered(searchValue)        
+              )            
+            : null
           }
         </ul>
       </section>
